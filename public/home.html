@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Weather App</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: aliceblue;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        footer {
+            height: 5vh;
+            width: 100%;
+            background-color: #1E2A56;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+        main {
+            height: 85vh;
+            width: 100%;
+        }
+        
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>WeatherSmart</h1>
+        <div class="login-and-signup">
+            <button>Login</button>
+            <button>Sign Up</button>
+        </div>
 
+        <div class="right-section">
+            <div class="menu-icon" onclick="openMenu()">☰</div>
+            <!-- <div class="profile-pic" onclick="openMenu()"></div> -->
+        </div>
+    </nav>
+    <!-- Sidebar Menu -->
+    <div id="sidebar" class="sidebar">
+        <a class="close" href="#" onclick="closeMenu()">✖ Close</a>
+        <a href="#">Home</a>
+        <a href="#">Saved Locations</a>
+        <a href="#">Settings</a>
+        <!-- <a href="#" onclick="logout()">Logout</a> -->
+    </div>
+    <main>
+
+    </main>
+    <footer>© 2026 WeatherSmart App</footer>
+
+    <script>
+    </script>
+</body>
+</html>
