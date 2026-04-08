@@ -49,16 +49,22 @@
     <!-- Sidebar Menu -->
     <div id="sidebar" class="sidebar">
         <a class="close" href="#" onclick="closeMenu()">✖ Close</a>
-        <a href="#">Home</a>
-        <a href="#">Saved Locations</a>
+        <a href="home.html">Home</a>
+        <a href="saved.html">Saved Locations</a>
         <a href="#">Settings</a>
         <!-- <a href="#" onclick="logout()">Logout</a> -->
     </div>
     <main>
-
+        <div id="initial-search">
+            <h1>Stay Ahead of the Weather</h1>
+            <p>Enter a city to see current conditions and upcoming forecasts instantly.</p>
+            <div>
+                <input type="search" id="search" placeholder="Enter city...">
+                <button id="search-btn" onclick="getcurrentWeather()">search</button>
+            </div>
+        </div>
     </main>
     <footer>© 2026 WeatherSmart App</footer>
-
     <script>
     </script>
 </body>

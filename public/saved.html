@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Locations</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+    </style>
+</head>
+<body>
+        <nav>
+        <h1>WeatherSmart</h1>
+
+        <div class="right-section">
+            <div class="menu-icon" onclick="openMenu()">☰</div>
+            <!-- <div class="profile-pic" onclick="openMenu()"></div> -->
+        </div>
+    </nav>
+    <div id="sidebar" class="sidebar">
+        <a class="close" href="#" onclick="closeMenu()">✖ Close</a>
+        <a href="home.html">Home</a>
+        <a href="saved.html">Saved Locations</a>
+        <a href="#">Settings</a>
+        <!-- <a href="#" onclick="logout()">Logout</a> -->
+    </div>
+
+    <div class="main-container">
+        <div class="locations-list" id="locationsList">
+            <h2>Saved Locations</h2>
+        
+            <div class="location-container">
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+                <div class="location-item" onclick="showWeather('Port of Spain')">Port of Spain</div>
+                <div class="location-item" onclick="showWeather('San Fernando')">San Fernando</div>
+            </div>
+        </div>
+        <div class="details-panel">
+            <div class="weather-card">
+                <div class="top">
+                    <button id="save-btn" style="background-color: red;">🔖Unsave</button>
+                </div>
+                <h2 id="city-name">City</h2>
+                <img id="weather-icon" src="https://openweathermap.org/img/wn/01d.png">
+                <h1 id="temperature">--°C</h1>
+                <h2>Feels like: --°C</h2>
+                <p id="condition">Condition</p>
+                <p id="date">Date goes here</p>
+
+                <div class="extra">
+                    <p id="humidity">Humidity: --%</p>
+                    <p id="wind">Wind: -- km/h</p>
+                </div>
+            </div>
+            <div id="map" class="map">Map here</div>
+        </div>
+    </div>
+</body>
+</html>
+
