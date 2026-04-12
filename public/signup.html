@@ -16,11 +16,10 @@
 
 body {
     height: 100vh;
+    width: 100vw;
     display: flex;
     justify-content: center;
-    align-items: center;
-    /* Weather-themed gradient: Soft Sky Blue to Deep Ocean Blue */
-    background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+    align-items: center; 
     overflow: hidden;
 }
 
@@ -30,13 +29,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?auto=format&fit=crop&w=1920&q=80'); /* Optional weather-related background image */
+    background: #000 url('https://images.unsplash.com/photo-1431440869543-efaf3388c585?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZGFyayUyMHdlYXRoZXJ8ZW58MHx8MHx8fDA%3D');
     background-size: cover;
     background-position: center;
 }
 
 .signup-container {
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent */
+    /* background: rgba(255, 255, 255, 0.2); /* Semi-transparent */
     backdrop-filter: blur(15px); /* Frosted glass effect */
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -127,22 +126,35 @@ body {
     font-weight: 600;
 }
 
+.google-btn {
+display: flex;
+align-items: center;
+justify-content: center;
+background: #fff;
+gap: 10px;
+margin-top: 10px;
+padding: 10px;
+border: none;
+border-radius: 10px;
+width: 100%;
+}
+
+.google-btn:hover {
+background: #f0f0f0;
+transform: translateY(-2px);
+}
+
 </style>
 <body>
 
     <div class="weather-background">
         <div class="signup-container">
             <div class="signup-header">
-                <h1>Biscuit Biters</h1>
+                <h1>WeatherSmart <br> Sign Up</h1>
                 <p>Personalize your weather experience</p>
             </div>
             
             <form action="#" class="signup-form">
-                <div class="input-group">
-                    <label for="username">Full Name</label>
-                    <input type="text" id="username" placeholder="Enter your name" required>
-                </div>
-
                 <div class="input-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" placeholder="example@weather.com" required>
@@ -150,7 +162,7 @@ body {
 
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Min. 8 characters" required>
+                    <input type="text" id="password" placeholder="Min. 6 characters" required>
                 </div>
 
                 <button type="submit" class="signup-btn">Get Started</button>
@@ -161,71 +173,80 @@ body {
             </div>
         </div>
     </div>
+
+    <script type ="module">
+    
+        import { auth, signUpUser } from "./auth.js";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const signupForm = document.querySelector('.signup-form');
+            const signupBtn = document.querySelector('.signup-btn');
+
+            // 1. Smooth Button Interaction
+            signupBtn.addEventListener('mousedown', () => {
+                signupBtn.style.transform = 'scale(0.98)';
+            });
+
+            signupBtn.addEventListener('mouseup', () => {
+                signupBtn.style.transform = 'translateY(-2px)';
+            });
+
+            // 2. Form Submission & Validation
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Get values from inputs
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+
+                // Basic Validation Logic
+                if (password.length < 6) {
+                    alert("For your security, please use at least 6 characters.");
+                    return;
+                }
+
+                // 3. Simulating a "Weather App" Loading State
+                signupBtn.disabled = true;
+                signupBtn.innerText = "Signing Up...";
+
+                try {
+                    await signUpUser(auth, email, password);
+                    alert("Welcome to WeatherSmart, " + name + "! Your account has been created.");
+                    // Optionally, redirect to the main app page after successful signup    
+                    window.location.href = "index.html";
+                } catch (error) {
+
+                    if (error.code === 'auth/email-already-in-use') {
+                            alert("This email is already used!");
+                    } else {
+                            alert("Error: " + error.message);                
+                    }
+
+                    signupBtn.disabled = false;
+                    signupBtn.innerText = "Get Started";
+                }
+        
+            
+            });
+
+            // 4. Input Focus Effects (Dynamic Glow)
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.style.transition = '0.3s';
+                    input.style.borderBottom = '2px solid #fff';
+                });
+                
+                input.addEventListener('blur', () => {
+                    input.style.borderBottom = 'none';
+                });
+            });
+        });
+</script>
     
 </body>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const signupForm = document.querySelector('.signup-form');
-    const signupBtn = document.querySelector('.signup-btn');
 
-    // 1. Smooth Button Interaction
-    signupBtn.addEventListener('mousedown', () => {
-        signupBtn.style.transform = 'scale(0.98)';
-    });
-
-    signupBtn.addEventListener('mouseup', () => {
-        signupBtn.style.transform = 'translateY(-2px)';
-    });
-
-    // 2. Form Submission & Validation
-    signupForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        // Get values from inputs
-        const name = document.getElementById('username').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-
-        // Basic Validation Logic
-        if (password.length < 8) {
-            alert("For your security, please use at least 8 characters.");
-            return;
-        }
-
-        // 3. Simulating a "Weather App" Loading State
-        signupBtn.disabled = true;
-        signupBtn.innerText = "Connecting to Satellite...";
-        signupBtn.style.opacity = "0.7";
-
-        // Mimic an API call delay
-        setTimeout(() => {
-            console.log("User Registered:", { name, email });
-            alert(`Welcome to Biscuit Biters, ${name}! Redirecting to your local forecast...`);
-            
-            // Here you would redirect to your main weather dashboard
-            // window.location.href = 'dashboard.html';
-            
-            signupBtn.disabled = false;
-            signupBtn.innerText = "Get Started";
-            signupBtn.style.opacity = "1";
-        }, 2000);
-    });
-
-    // 4. Input Focus Effects (Dynamic Glow)
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-        input.addEventListener('focus', () => {
-            input.parentElement.style.transition = '0.3s';
-            input.style.borderBottom = '2px solid #fff';
-        });
-        
-        input.addEventListener('blur', () => {
-            input.style.borderBottom = 'none';
-        });
-    });
-});
-</script>
 </html>
 
 
