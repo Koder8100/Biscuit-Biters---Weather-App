@@ -1,0 +1,76 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherSmart - Settings</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .settings-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .settings-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 20px;}
+        .save-btn { width: 100%; background-color: #1E2A56; color: white; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <nav><h1>WeatherSmart Settings</h1></nav>
+    
+    <div class="settings-container">
+        <h2>Account Settings</h2>
+        <hr><br>
+        
+        <div class="settings-group">
+            <label for="old-password" id="old-password">Old Password</label>
+            <input type="text" id="old-password-input" placeholder="Enter your current password">
+            <label for="new-password" id="new-password">New Password</label>
+            <input type="text" id="new-password-input" placeholder="Enter at least 6 characters">
+        </div>
+
+        <button class="save-btn" id="change-password-btn">Update Password</button>
+        <br><br>
+        <a href="index.html" style="text-decoration: none; color: #1E2A56;">← Back to Home</a>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+
+    <script type="module">
+    // Import EmailAuthProvider and reauthenticate...
+    import { auth, updatePassword, EmailAuthProvider, reauthenticateWithCredential, logoutUser } from "./auth.js";
+
+    document.getElementById("change-password-btn").addEventListener("click", async () => {
+        const user = auth.currentUser;
+        const oldPassword = document.getElementById("old-password-input").value;
+        const newPassword = document.getElementById("new-password-input").value;
+
+        if (!user) return alert("You must be logged in!");
+        if (newPassword.length < 6) return alert("New password must be 6+ characters.");
+
+        try {
+            
+            if (confirm("Are you sure you want to change your password? You will be logged out and need to log in again with the new password.")) {
+                const credential = EmailAuthProvider.credential(user.email, oldPassword);
+                await reauthenticateWithCredential(user, credential);
+                await updatePassword(user, newPassword);
+                logoutUser();
+                alert("Password updated successfully! You have been logged out. Please log in again with your new password.");
+                window.location.href = "index.html";
+            }
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
+                alert("The old password you entered is incorrect.");
+            } else {
+                alert("Error: " + error.message);
+            }
+        }
+    });
+</script>
+</body>
+</html>
