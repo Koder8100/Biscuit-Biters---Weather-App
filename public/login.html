@@ -83,7 +83,6 @@ color: #fff;
 font-size: 0.8rem;
 top: 10px;
 transform: translateY(-12px);
-color: blue;
 }
 
 .forget{
@@ -158,36 +157,49 @@ margin-top: 10px;
 <form action="#">
       <h2>Login</h2>
      <div class="input-field">
-     <input type="text" required>
+     <input id="email" type="text" required>
     <label>Enter your email</label>
     </div>
     <div class="input-field">
-    <input type="password" required>
+    <input id="password" type="text" required>
         <label>Enter your password</label>
     </div>
-
-  <button class="google-btn">
-    <div class="google-icon-wrapper">
-      <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"/>
-    </div>
-    <span class="btn-text">Sign in with Google</span>
-  </button>
 
     <div class="forget">
   <label for="remember">
          <input type="checkbox" id="remember">
             <p>Remember me</p>
         </label>
-        <a href="#">Forgot password?</a>
+        <a href="forgotpass.html">Forgot password?</a>
     </div>
-    <button type="submit">Log In</button>
+    <button type="submit" class="login-btn">Log In</button>
     <div class="register">
     <p>Don't have an account? <a href="signup.html">Sign Up Now!</a></p>
     </div>
     </form>
     </div>
 
-    <script>
+    <script type="module" src="auth.js"></script>
+
+    <script type="module">
+      import { auth, signInUser, setPersistence, browserLocalPersistence } from "./auth.js";
+
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+
+      document.querySelector(".login-btn").addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        await setPersistence(auth, browserLocalPersistence);
+
+        try {
+          await signInUser(auth, email.value, password.value);
+          alert("Login successful!");
+          window.location.href = "index.html"; 
+        } catch (error) {
+          alert("Login failed. Please check your email and password and try again.");
+        }
+      });
 
     </script>
 </body>
