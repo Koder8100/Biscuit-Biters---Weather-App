@@ -57,9 +57,16 @@
             padding: 20px;
             display: flex;
             gap: 20px;
+            background: grey url("https://media.istockphoto.com/id/522305524/photo/dramatic-stormy-dark-cloudy-sky-over-sea.jpg?s=612x612&w=0&k=20&c=qH_0otymnU2CvJ2qfYGirt4la_nTK1avAjDpNdWVB8U=");
+            background-size: cover;
         }
         .weather-card {
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            background: rgba(49, 230, 245, 0.63);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10.6px);
+            -webkit-backdrop-filter: blur(10.6px);
+            border: 1px solid rgba(49, 230, 245, 0.14);
             padding: 15px;
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -117,23 +124,51 @@
         <a class="close" href="#" onclick="closeMenu()">✖ Close</a>
         <a href="index.html">Home</a>
         <a href="saved.html">Saved Locations</a>
-        <a href="#">Settings</a>
+        <a href="settings.html" style="display: none;">Settings</a>
+        <a href="#" id="logout-btn" style="display: none;">Logout</a> 
         <!-- <a href="#" onclick="logout()">Logout</a> -->
     </div>
 
     <div class="main-container">
         <div class="locations-list" id="locationsList">
             <h2>Saved Locations</h2>
-            <div class="location-item" onclick="getcurrentWeather('Port of Spain')">Port of Spain</div>
+            <!-- <div class="location-item" onclick="getcurrentWeather('Port of Spain')">Port of Spain</div> -->
         </div>
         <div class="details-panel">
-           <p style="color: #636e72; font-size: 18px;">Select a saved location to view its weather details.</p>
+           
         </div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
-     <script>
+     <script type="module" src="auth.js"></script>
+     <script type="module" src="saved.js"></script>
+     <script type="module">
+
+        import { auth, onAuthStateChanged, logoutUser } from "./auth.js";
+        import { getSavedLocationsForUser, removeLocationForUser } from "./saved.js";
+
+        window.getcurrentWeather = getcurrentWeather;
+        window.openMenu = openMenu;
+        window.closeMenu = closeMenu;
+        window.removeLocation = removeLocation;
+        window.logoutUser = logoutUser;
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                document.querySelector(".details-panel").innerHTML = `<p style="color: #fff; font-size: 18px;">Please log in to view saved locations.</p>`;
+
+            } else {
+                const settingsLink = document.querySelector(".sidebar a:nth-child(4)");
+                const logoutLink = document.querySelector(".sidebar a:nth-child(5)");
+                settingsLink.style.display = "block";
+                logoutLink.style.display = "block";
+                loadSavedLocations();
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', logoutUser);
+
         function openMenu() {
             document.getElementById("sidebar").classList.add("active");
         }
@@ -153,7 +188,7 @@
             weatherDetails.innerHTML = `
                 <div class="weather-card">
                     <div class="top">
-                        <button id="save-btn" style="background-color: red;">🔖Unsave</button>
+                        <button id="unsave-btn" style="background-color: red;" onclick="removeLocation('${data.name}')">Unsave</button>
                     </div>
                     <h2 id="city-name">${data.name}</h2>
                     <img id="weather-icon" src="https://openweathermap.org/img/wn/${data.weather[0].icon}.png">
@@ -199,6 +234,35 @@
                 alert("City not found! Please check the spelling or try a different city.");
             }
         }
+
+        let savedLocations = [];
+
+        async function loadSavedLocations() {
+            savedLocations = await getSavedLocationsForUser(auth.currentUser);
+            const locationsList = document.getElementById("locationsList");
+            const detailsPanel = document.querySelector('.details-panel');
+            if (savedLocations.length === 0) {
+                locationsList.innerHTML += `<p style="color: #fff; font-size: 18px;">No saved locations yet</p>`;
+                detailsPanel.innerHTML = `<p style="color: #fff; font-size: 18px;">No saved locations. Please search for a city and save it on the <a href="index.html" style="color: #fff;">home page</a>.</p>`;
+            } else {
+                savedLocations.forEach(location => {
+                    locationsList.innerHTML += `<div class="location-item" onclick="getcurrentWeather('${location}')">${location}</div>`;
+                });
+                detailsPanel.innerHTML = `<p style="color: #fff; font-size: 18px;">Select a saved location to view its weather details.</p>`;
+            }
+        }
+
+        async function removeLocation(cityName) {
+            const locationsList = document.getElementById("locationsList");
+            await removeLocationForUser(auth.currentUser, cityName);
+            alert(`Location "${cityName}" removed from your profile!`);
+            // Refresh the saved locations list
+            locationsList.innerHTML = '<h2>Saved Locations</h2>';
+            loadSavedLocations();
+        }
+
+
+
 </script>
 </body>
 </html>
